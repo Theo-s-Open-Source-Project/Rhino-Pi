@@ -1,5 +1,34 @@
 # Rhino-Pi
 
+* [一、前言（碎碎念）](#一前言碎碎念)
+  * [二、Uboot 系统移植](#二uboot-系统移植)
+    * [1\.克隆 LicheePI nano 的u\-boot](#1克隆-licheepi-nano-的u-boot)
+    * [2\.修改开发板对应的板级文件](#2修改开发板对应的板级文件)
+    * [3\.修改 U\-Boot 图形界面配置文件](#3修改-u-boot-图形界面配置文件)
+      * [3\.1 环境变量 bootcmd](#31-环境变量-bootcmd)
+      * [3\.2 环境变量 bootargs](#32-环境变量-bootargs)
+      * [3\.3 编译](#33-编译)
+      * [3\.4 烧写](#34-烧写)
+  * [三、kernel 内核移植](#三kernel-内核移植)
+    * [1\.下载解压 LicheePI nano 的 kernel](#1下载解压-licheepi-nano-的-kernel)
+    * [2\.修改 kernel 图形界面配置文件](#2修改-kernel-图形界面配置文件)
+    * [3\.编译 kernel 内核](#3编译-kernel-内核)
+    * [4\.烧写](#4烧写)
+  * [四、rootfs  根文件系统移植](#四rootfs--根文件系统移植)
+    * [1\.Buildroot 制作根文件系统](#1buildroot-制作根文件系统)
+    * [2\.busyBox 制作根文件系统（未编写）](#2busybox-制作根文件系统未编写)
+    * [3\.Debian 文件系统制作（编写ing \- 有小bug）](#3debian-文件系统制作编写ing---有小bug)
+    * [4\.NES 游戏（编写ing）](#4nes-游戏编写ing)
+  * [五、Linux 驱动开发](#五linux-驱动开发)
+    * [1\.设备树（编写ing）](#1设备树编写ing)
+      * [设备节点](#设备节点)
+      * [设备属性](#设备属性)
+    * [2\.LED 驱动开发（有 bug）](#2led-驱动开发有-bug)
+    * [3\.驱动模块的加载和卸载（未编写）](#3驱动模块的加载和卸载未编写)
+    * [4\.USB 驱动开发](#4usb-驱动开发)
+    * [5\.LCD 驱动开发](#5lcd-驱动开发)
+    * [6\.无线网卡（未编写）](#6无线网卡未编写)
+    * [7\.音频驱动（未编写）](#7音频驱动未编写)
 
 
 
@@ -11,7 +40,41 @@
 
 
 
-## 一、Uboot 系统移植
+## 一、前言（碎碎念🤣）
+
+​		本项目是基于全志 F1C100S/F1C200S 芯片的 Linux-Card，开发目的是想折腾个掌机出来，用于 ~~上课摸鱼~~ 😎 额，学习嵌入式Linux，现开源硬件部分：核心板 Gerber、底板源文件（基于立创 EDA 绘制）、3D 外壳 STL 文件，软件部分：u-boot、kernel 内核、rootfs 根文件系统。
+
+![F1C100S_Core](Image/F1C100S_Core.png)
+
+<img src="Image/F1C100S_Bottom.png" alt="F1C100S_Bottom" style="zoom: 50%;" />
+
+> 核心板资源：
+>
+> - 引出所有 IO 口资源
+> - 板载 SPI Flash
+> - 板载一个电源指示灯和一个用户编程灯
+>
+> 底板资源：
+>
+> - SD卡 插槽
+> - 一个 micro usb
+> - 一个 USB-A 口（可用于外接键盘、鼠标、USB 无线网卡
+> - 一个 3.5 mm 耳机接口
+> - 板载 WiFi 模块
+> - 1.8’ LCD
+
+​		项目进度，先已移植 InfoNES 模拟器，接下来调通音频即可，视频如下：
+
+[![Watch the video](Image/NES.png)]([自制 Linux Card 运行 Nes 游戏 Mario_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1F44y1V7m9?spm_id_from=333.999.0.0))
+
+>项目需求：
+>
+>- 画面 ✔
+>- 音频 ✖
+
+
+
+## 二、Uboot 系统移植
 
 
 
@@ -115,11 +178,9 @@ make menuconfig
 >
 > <M>	-	modularizes features	表示编译该模块但不编译进内核	
 
-​		将光标移到 bootcmd value 处（如 图4 所示）
+​		将光标移到 bootcmd value 处，
 
 ![4](Image/4.png)
-
-<center>图4</center>
 
 ​		键盘按下 Enter 键，进入编辑模式，输入以下命令：
 
@@ -151,27 +212,21 @@ console=ttyS0,115200 panic=5 rootwait root=/dev/mmcblk0p2 earlyprintk rw
 
 
 
-​		将光标移到 Enable boot arguments 处（如 图5 所示），键盘输入 Y 开启该参数
+​		将光标移到 Enable boot arguments 处，键盘输入 Y 开启该参数，
 
 ![5](Image/5.png)
 
-<center>图5</center>
-
-​		接着将光标移到 Boot arguments  (NEW) 处，键盘按下 ENTER （如 图6 所示）
+​		接着将光标移到 Boot arguments  (NEW) 处，键盘按下 ENTER ，
 
 ![6](Image/6.png)
 
-<center>图6</center>
-
-​		输入以下代码，并保存退出
+​		输入以下代码，并保存退出。
 
 ```shell
 console=ttyS0,115200 panic=5 rootwait root=/dev/mmcblk0p2 earlyprintk rw
 ```
 
 ![7](Image/7.png)
-
-<center>图7</center>
 
 
 
@@ -183,11 +238,9 @@ console=ttyS0,115200 panic=5 rootwait root=/dev/mmcblk0p2 earlyprintk rw
 make -j4
 ```
 
-​		如果出现报错（如 图8 所示），是因为 F1C100S 芯片的内核为 ARM9，其架构使用的是 ARMv5 架构，该芯片内部没有浮点运算单元，而我之前安装的 arm-linux-gnueabihf 编译器只能编译带浮点运算单元的芯片，因此对于 F1C100S 这种不带浮点运算单元的芯片，要安装 arm-linux-gnueabi 编译器。
+​		如果出现报错，是因为 F1C100S 芯片的内核为 ARM9，其架构使用的是 ARMv5 架构，该芯片内部没有浮点运算单元，而我之前安装的 arm-linux-gnueabihf 编译器只能编译带浮点运算单元的芯片，因此对于 F1C100S 这种不带浮点运算单元的芯片，要安装 arm-linux-gnueabi 编译器。
 
 ![8](Image/8.png)
-
-<center>图8</center>
 
 ​		下载好后执行以下命令：
 
@@ -218,17 +271,15 @@ sudo apt-get install python-dev
 sudo apt-get install swig
 ```
 
-​		编译成功后（如 图11 所示）
+​		编译成功：
 
 ![11](Image/11.png)
-
-<center>图11</center>
 
 
 
 #### 3.4 烧写
 
-​		使用 dd 命令将 u-boot-sunxi-with-spl.bin 进行块搬移烧录到 tf 卡的 8k 偏移处地址
+​		使用 dd 命令将 u-boot-sunxi-with-spl.bin 进行块搬移烧录到 tf 卡的 8k 偏移处地址。
 
 ```shell
 sudo dd if=u-boot-sunxi-with-spl.bin of=/dev/sdb bs=1024 seek=8
@@ -238,7 +289,7 @@ sudo dd if=u-boot-sunxi-with-spl.bin of=/dev/sdb bs=1024 seek=8
 
 
 
-## 二、kernel 内核移植
+## 三、kernel 内核移植
 
 
 
@@ -255,15 +306,13 @@ cd /home/z/linux/F1C100S/kernel/
 tar -zxvf linux-5.7.1.tar.gz
 ```
 
-​		指定编译时的交叉工具链和架构，打开 *kernel* 目录下的 Makefile 文件进行修改（如 图12 所示），命令如下：
+​		指定编译时的交叉工具链和架构，打开 *kernel* 目录下的 Makefile 文件进行修改，命令如下：
 
 ```shell
 sudo vim Makefile
 ```
 
 ![12](Image/12.png)
-
-<center>图12</center>
 
 ​		修改 CROSS_COMPILE 变量为：
 
@@ -272,15 +321,13 @@ ARCH?=arm
 CROSS_COMPILE ?=arm-linux-gnueabi-
 ```
 
-​		接下来配置源码，下载 licheepi_nano 的配置文件（[下载链接](https://github.com/CUTETA/Rhino-Pi/tree/master/Lib/2.Kernel )） linux-licheepi_nano_defconfig 将该  文件拷贝到 *linux-5.7.1/arch/arm/configs* 目录下（如 图13 所示）。回到 kernel 根目录下执行以下命令编译该配置文件（到此内核配置完成）：
+​		接下来配置源码，下载 licheepi_nano 的配置文件（[下载链接](https://github.com/CUTETA/Rhino-Pi/tree/master/Lib/2.Kernel )） linux-licheepi_nano_defconfig 将该  文件拷贝到 *linux-5.7.1/arch/arm/configs* 目录下。回到 kernel 根目录下执行以下命令编译该配置文件（到此内核配置完成）：
 
 ```shell
 make linux-licheepi_nano_defconfig
 ```
 
 ![13](Image/13.png)
-
-<center>图13</center>
 
 
 
@@ -318,11 +365,9 @@ make -j4
 
 ### 4.烧写
 
-​		从上一步的 u-boot 移植环节中的 bootcmd 配置（如 图15 所示）可以知道需要将 zImage 和 suniv-f1c100s-licheepi-nano.dtb 文件复制到 TF 卡的 0:1 分区中。
+​		从上一步的 u-boot 移植环节中的 bootcmd 配置可以知道需要将 zImage 和 suniv-f1c100s-licheepi-nano.dtb 文件复制到 TF 卡的 0:1 分区中。
 
 ![15](Image/15.png)
-
-<center>图15</center>
 
 ​		下面来使用 gparted 软件对 TF 卡进行分区，在终端中输入以下命令安装 gparted 软件：
 
@@ -330,7 +375,7 @@ make -j4
 sudo apt-get install gparted
 ```
 
-​		在命令行中输入以下命令运行 gparted 软件（如 图16 所示）：
+​		在命令行中输入以下命令运行 gparted 软件：
 
 ```shell
 gparted
@@ -338,27 +383,19 @@ gparted
 
 ![16](Image/16.png)
 
-<center>图16</center>
-
-​		选中未分配空间点击鼠标右键新建，设置之前的空余空间为 1 MiB（该空间用于存放 uboot 系统），设置新大小为 32 MiB（该空间用于存放 zImage 文件和 dtb 文件），因为 uboot 中的 bootcmd 参数使用的是 FAT 的分区表格式，所以这里初始化为 fat16 格式（如 图17 所示）。
+​		选中未分配空间点击鼠标右键新建，设置之前的空余空间为 1 MiB（该空间用于存放 uboot 系统），设置新大小为 32 MiB（该空间用于存放 zImage 文件和 dtb 文件），因为 uboot 中的 bootcmd 参数使用的是 FAT 的分区表格式，所以这里初始化为 fat16 格式。
 
 ![17](Image/17.png)
 
-<center>图17</center>
-
-​				新建第二个分区为根文件系统分区，设置之前的空余空间为 0 MiB，设置新大小为 32 MiB（该空间用于存放根文件系统），初始化为 ext4 格式（如 图18 所示）。
+​				新建第二个分区为根文件系统分区，设置之前的空余空间为 0 MiB，设置新大小为 32 MiB（该空间用于存放根文件系统），初始化为 ext4 格式。
 
 ![18](Image/18.png)
 
-<center>图18</center>
-
-​		点击 ✔ 应用操作到设备，（如 图19 所示）。
+​		点击 ✔ 应用操作到设备，
 
 ![19](Image/19.png)
 
-<center>图19</center>
-
-​		接着将 zImage 和 suniv-f1c100s-licheepi-nano.dtb 拷贝到 TF 卡第一个分区 boot 中。上电启动后，可以在 SecureCRT 中看到串口输出信息（如 图20 所示）。
+​		接着将 zImage 和 suniv-f1c100s-licheepi-nano.dtb 拷贝到 TF 卡第一个分区 boot 中。上电启动后，可以在 SecureCRT 中看到串口输出信息。
 
 ```shell
 cp zImage /media/z/BOOT
@@ -367,13 +404,11 @@ cp suniv-f1c100s-licheepi-nano.dtb /media/z/BOOT
 
 ![20](Image/20.png)
 
-<center>图20</center>
-
 ​		可以看到内核已经成功启动，接下来进行 rootfs 移植。
 
 
 
-## 三、rootfs  根文件系统移植
+## 四、rootfs  根文件系统移植
 
 ​		根文件系统和 Linux 内核是分开的，单独的 Linux 内核是没法正常工作的，必须加上根文件系统。如果不提供根文件系统，Linux 内核在启动时会提示 Kernel panic （内核崩溃）。下面将分别使用 busyBox 和 Buildroot 制作根文件系统。
 
@@ -406,25 +441,17 @@ make menuconfig
 
 ![21](Image/21.png)
 
-<center>图21</center>
-
-​		进入 Build options 选项，修改编译时使用的库类型为 both static and shared （同时使用静态库和动态库），保存返回上一级（如 图22 所示）。
+​		进入 Build options 选项，修改编译时使用的库类型为 both static and shared （同时使用静态库和动态库），保存返回上一级。
 
 ![22](Image/22.png)
 
-<center>图22</center>
-
-​		进入 Toolchain（工具链） 选项，勾选上 Enable WCHAR support  ，Thread library debugging ，以及框选的选项（如 图23 所示），保存返回上一级。
+​		进入 Toolchain（工具链） 选项，勾选上 Enable WCHAR support  ，Thread library debugging ，以及框选的选项，保存返回上一级。
 
 ![23](Image/23.png)
 
-<center>图23</center>
-
-​		进入 System configuration（系统配置） 选项，System banner 表示启动根文件系统后输出的信息，Root password 该选项可以修改登录密码（如 图24 所示），保存退出图形配置界面。
+​		进入 System configuration 选项，System banner 表示启动根文件系统后输出的信息，Root password 该选项可以修改登录密码（如 图24 所示），保存退出图形配置界面。
 
 ![24](Image/24.png)
-
-<center>图24</center>
 
 ​		执行以下命令编译根文件系统，编译时间有点长，期间可能需要科学上网 (～￣▽￣)～
 
@@ -434,9 +461,7 @@ make
 
 ![25](Image/25.png)
 
-<center>图25</center>
-
-​		编译完成后进入 *output/images* 目录，找到 rootfs.tar 文件（如 图26 所示）将其解压拷贝进上一环节创建的 TF 卡 rfoots 分区。
+​		编译完成后进入 *output/images* 目录，找到 rootfs.tar 文件将其解压拷贝进上一环节创建的 TF 卡 rfoots 分区。
 
 ```shell
 sudo tar -xvf rootfs.tar -C /media/z/rootfs/
@@ -444,9 +469,7 @@ sudo tar -xvf rootfs.tar -C /media/z/rootfs/
 
 ![26](Image/26.png)
 
-<center>图26</center>
-
-​		上电启动后，可以在 SecureCRT 中看到串口输出信息（如 图27 所示），很完美...踩坑了😭
+​		上电启动后，可以在 SecureCRT 中看到串口输出信息，很完美...踩坑了😭
 
 ![27](Image/27.png)
 
@@ -520,11 +543,9 @@ sudo tar -xvf rootfs.tar -C /media/z/rootfs/
 };
 ```
 
-​		上电启动后，在 SecureCRT 中看到串口输出信息（如 图28 所示），又踩坑了...😤
+​		上电启动后，在 SecureCRT 中看到串口输出信息，又踩坑了...😤
 
 ![28](Image/28.png)
-
-<center>图28</center>
 
 ​		根据错误（error -8）提示  [查表](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/uapi/asm-generic/errno-base.h)（知道 ENOEXEC	8   /* Exec format error */   即格式错误），和 */sbin/init* 这个文件有关，进入 */sbin* 目录输入以下命令：
 
@@ -536,19 +557,13 @@ ls -la init
 
 ![29](Image/29.png)
 
-<center>图29</center>
-
-​		重新运行后观察串口打印，发现还是一样的错误，这是为什么呢？通过对比 TF 卡里的 *busybox* 和刚编译的 *busybox* （如 图xxx 所示）发现可能是在执行 sudo tar -xvf rootfs.tar -C /media/z/rootfs/ 命令将其解压到 TF 卡 *rootfs* 分区时出了问题。
+​		重新运行后观察串口打印，发现还是一样的错误，这是为什么呢？通过对比 TF 卡里的 *busybox* 和刚编译的 *busybox* 发现可能是在执行 sudo tar -xvf rootfs.tar -C /media/z/rootfs/ 命令将其解压到 TF 卡 *rootfs* 分区时出了问题。
 
 ![30](Image/30.png)
 
-<center>图30</center>
-
-​		修改后新运行后观察串口打印，发现软连接拷贝不完全（如 图31 所示）
+​		修改后新运行后观察串口打印，发现软连接拷贝不完全，
 
 ![31](Image/31.png)
-
-<center>图31</center>
 
 ​		输入以下命令查看建立的软链接：
 
@@ -565,13 +580,9 @@ sudo ln -s libuClibc-1.0.28.so libc.so.0
 
 ![32](Image/32.png)
 
-<center>图32</center>
-
-​		打开 SecureCRT 可以看到正常启动了，输入用户名和密码，默认用户名是 *root*，密码之前我们修改过是 *19010204* （如 图33 所示）
+​		打开 SecureCRT 可以看到正常启动了，输入用户名和密码，默认用户名是 *root*，密码之前我们修改过是 *19010204* ，
 
 ![33](Image/33.png)
-
-<center>图33</center>
 
 ```shell
 poweroff
@@ -586,13 +597,11 @@ vi /etc/profile
 export PS1='\u@\h:\w\a\$ '
 ```
 
-​		重启后发现是不是 b 格瞬间起来了（如 图54 所示）😎
+​		重启后发现是不是 b 格瞬间起来了 😎
 
 ![54](Image/54.png)
 
-<center>图54</center>
-
-​		我们发现现在的主机名是 buildroot 不行得换个响亮得名字，接下来修改主机名（如 图55 所示），命令如下：
+​		我们发现现在的主机名是 buildroot 不行得换个响亮得名字，接下来修改主机名，命令如下：
 
 ```shell
 HOSTNAME=z-Rhino-Pi
@@ -602,8 +611,6 @@ sed -i '/localhost/s/$/\t'"$HOSTNAME"'/g' /etc/hosts
 ```
 
 ![55](Image/55.png)
-
-<center>图55</center>
 
 
 
@@ -739,7 +746,7 @@ tar cvf ../rootfs.tar .    #要注意那个.  代表当前目录
 
 
 
-## 四、Linux 驱动开发
+## 五、Linux 驱动开发
 
 
 
@@ -860,17 +867,13 @@ spi1:spi@1c06000 {
 
 ### 		2.LED 驱动开发（有 bug）
 
-​		前面学习了系统移植，接下来学习驱动开发。老规矩咱身为一名精通点灯技术的 ctrl c v 工程师🧔 接下来将学习如何编写 Linux 下的 LED 驱动。我们先看下 F1C100S 核心板的原理图（如 图34 所示）
+​		前面学习了系统移植，接下来学习驱动开发。老规矩咱身为一名精通点灯技术的 ctrl c v 工程师🧔 接下来将学习如何编写 Linux 下的 LED 驱动。我们先看下 F1C100S 核心板的原理图，
 
 ![34](Image/34.png)
-
-<center>图34</center>
 
 ​		由图可知 Rhino Pi （暂定这个名字😋）板载一个用户 LED 连接在 PE6 上。
 
 ![35](Image/35.png)
-
-<center>图35</center>
 
 ​		先前看到一篇博客，我们可以用 Linux 提供的 GPIO 系统通过 shell 命令进行点灯（后面再介绍用驱动方式来点灯）。下面介绍 GPIO 引脚编号的计算方式：
 
@@ -905,13 +908,11 @@ echo 134 > /sys/class/gpio/unexport
 
 ![IMG_8594](Image/IMG_8594.gif)
 
-​		接下来通过驱动开发方式来点灯，查看 F1C200S 用户手册（PS：因为目前网上只能找到 F1C200S 的手册，F1C100S 与 F1C200S 差别在于内置 DDR 一个是 32MB 一个是 64MB）找到关于 GPIOE 的寄存器地址（如 图36 所示）。
+​		接下来通过驱动开发方式来点灯，查看 F1C200S 用户手册（PS：因为目前网上只能找到 F1C200S 的手册，F1C100S 与 F1C200S 差别在于内置 DDR 一个是 32MB 一个是 64MB）找到关于 GPIOE 的寄存器地址。
 
 ![36](Image/36.png)
 
 ![36](Image/36(2).png)
-
-<center>图36</center>
 
 ​				通过查表我们得到要用到的寄存器，以 GPIOE_CFG0 为例，$设备号 = 主设备号 + 次设备号$ 即：
 $$
@@ -928,15 +929,11 @@ $$
 
 ![38](Image/38.png)
 
-<center>图38</center>
-
 ​		编写完 LED 驱动程序后，接下来编写测试 APP 程序，led 驱动加载成功以后手动创建/dev/led 节点，应用 APP 通过操作/dev/led
 
-文件来完成对 LED 设备的控制，向/dev/led 文件写 0 表示关闭 LED 灯，写 1 表示打开 LED 灯。新建 ledApp.c 文件编写 LED 应用程序。（如 图39 所示）
+文件来完成对 LED 设备的控制，向/dev/led 文件写 0 表示关闭 LED 灯，写 1 表示打开 LED 灯。新建 ledApp.c 文件编写 LED 应用程序。
 
 ![39](Image/39.png)
-
-<center>图39</center>
 
 ​		接下来创建 Makefile 脚本，代码如下所示，KERNELDIR 变量表示板子当前运行的 Linux 操作系统的源码（即：内核的源码）的目录。
 
@@ -953,11 +950,9 @@ clean:
 	$(MAKE) -C $(KERNELDIR) M=$(CURRENT_PATH) clean
 ```
 
-​		执行 make 命令编译成功以后就会生成一个名为 led_dev.ko 的驱动模块文件（如 图40 所示）。
+​		执行 make 命令编译成功以后就会生成一个名为 led_dev.ko 的驱动模块文件。
 
 ![40](Image/40.png)
-
-<center>图40</center>
 
 ​		接着输入如下命令编译 ledApp.c 这个测试程序：
 
@@ -965,11 +960,9 @@ clean:
 arm-linux-gnueabi-gcc ledApp.c -o ledApp
 ```
 
-​		将生成的 led.ko 和 ledApp 文件拷贝至 */media/z/rootfs/lib/modules/5.7.1*-Rhino Pi （如 图41 所示），因为使用 modprobe 命令来加载驱动。modprobe 命令默认会去 */lib/modules/<kernel-version>* 目录中查找模块，比如俺使用的 Linux kernel 的版本号为 5.7.1，所以 modprobe 命令默认会到 */lib/modules/5.7.1*-Rhino PI* 这个目录中查找相应的驱动模块，一般自己制作的根文件系统中是不会有这个目录的，需要自己手动创建。
+​		将生成的 led.ko 和 ledApp 文件拷贝至 */media/z/rootfs/lib/modules/5.7.1*-Rhino Pi ，因为使用 modprobe 命令来加载驱动。modprobe 命令默认会去 */lib/modules/<kernel-version>* 目录中查找模块，比如俺使用的 Linux kernel 的版本号为 5.7.1，所以 modprobe 命令默认会到 */lib/modules/5.7.1*-Rhino PI* 这个目录中查找相应的驱动模块，一般自己制作的根文件系统中是不会有这个目录的，需要自己手动创建。
 
 ![41](Image/41.png)
-
-<center>图41</center>
 
 ​		重启开发板进入 */lib/moudles/5.7.1*-Rhino PI 目录，输入以下命令：
 
@@ -984,27 +977,21 @@ mknod /dev/led c 200 0	//创建 "/dev/led" 设备节点
 modprobe -r led_dev.ko  //卸载驱动	or 	rmmod led_dev.ko 		
 ```
 
-​		如果出现以下报错（如 图42 所示），原因是默认情况下根文件系统不支持该指令，可以通过配置busybox来添加这个功能。
+​		如果出现以下报错，原因是默认情况下根文件系统不支持该指令，可以通过配置busybox来添加这个功能。
 
 ![42](Image/42.png)
 
 
 
-<center>图42</center>
-
-​		进入 */output/build/busybox-1.27.2* 目录，执行 make menuconfig 命令，进入 Linux Module Utilities 菜单，勾选✔上 depmod（如 图43 所示）。
+​		进入 */output/build/busybox-1.27.2* 目录，执行 make menuconfig 命令，进入 Linux Module Utilities 菜单，勾选✔上 depmod。
 
 ![43](Image/43.png)
 
-<center>图43</center>
-
 ​		接着将当前目录下的 .config 文件重命名为 busybox.config 后覆盖掉 *package/busybox/busybox.config* 文件，之后在 buildroot 根目录下重新执行 make 指令编译，busybox 将会自动更新，后更新根文件系统（参考：[根文件系统移植](https://jan-z.top/2022/03/02/F1C100S-Note3/)）。
 
-​		若出现以下情况（如 图44 所示），一般可能是没有执行权限，也可能是缺少库文件。
+​		若出现以下情况，一般可能是没有执行权限，也可能是缺少库文件。
 
 ![44](Image/44.png)
-
-<center>图44</center>
 
 ​		在 led_dev 目录下输入 `arm-linux-gnueabi-readelf -e ledApp` ，可以看到提示 [Requesting program interpreter: /lib/ld-linux.so.3] ，通过 `find / -name "linux.so.3"` 命令找到 linux.so.3 所在的目录，通过 `ls -il` 命令知道 linux.so.3 软链接 ld-2.25.so ，将其复制到开发板 */lib* 目录下并重新软链接。 
 
@@ -1123,13 +1110,11 @@ of_device_is_compatible(np, "allwinner,sun8i-h3-musb")||of_device_is_compatible(
 { .compatible = "allwinner,suniv-musb", },
 ```
 
-​		在 Linux 内核根目录下执行 make menuconfig 命令将 usb 驱动添加到内核，进入 Device Drivers -> USB support 开启框选上的选项（如图 51 所示）
+​		在 Linux 内核根目录下执行 make menuconfig 命令将 usb 驱动添加到内核，进入 Device Drivers -> USB support 开启框选上的选项，
 
 ![51](Image/51.png)
 
 ![51-1](Image/51-1.png)
-
-<center>图 51</center>
 
 ​		保存退出后执行 make-j4 编译内核。
 
@@ -1151,17 +1136,13 @@ of_device_is_compatible(np, "allwinner,sun8i-h3-musb")||of_device_is_compatible(
 
 ​		接下来我们通过修改 Linux 内核中自带的驱动源码快速移植 LCD 驱动，进入 Linux 内核目录 *drivers/staging/fbtft* 修改 ST7789V 的驱动（参考大佬的文章 [记录为Linux配置spi屏幕 (st7735s)](https://blog.csdn.net/qq_46604211/article/details/116449891)）。
 
-​		修改完成后，启动图形配置界面 make menuconfig （此前踩过坑，多亏 Leesans 大佬提醒）FC100S 在开启 SPI 驱动的时候必须开启 A31 SPI Controller （Device Drivers -> SPI support）如图  48 所示
+​		修改完成后，启动图形配置界面 make menuconfig （此前踩过坑，多亏 Leesans 大佬提醒）FC100S 在开启 SPI 驱动的时候必须开启 A31 SPI Controller （Device Drivers -> SPI support），
 
 ![48](Image/48.png)
 
-<center>图 48</center>
-
-​		接下来将 ST7735S 驱动编译进内核中，进入 Device Drivers -> Staging drivers -> Support for small TFT LCD display modules 选择 <*>   FB driver for the ST7789V LCD Controller  （如 图49 所示）
+​		接下来将 ST7735S 驱动编译进内核中，进入 Device Drivers -> Staging drivers -> Support for small TFT LCD display modules 选择 <*>   FB driver for the ST7789V LCD Controller  ，
 
 ![49](Image/49.png)
-
-<center>图49</center>
 
 ​		接下来 make -j4 编译内核，然后将镜像拷贝到tf卡第一分区中即可。接着修改 u-boot 的 bootargs 参数，在进入 u-boot 时按任意键进入 boot 命令，输入以下命令：
 
@@ -1170,7 +1151,7 @@ setenv bootargs "console=tty1 console=ttyS0,115200 panic=5 rootwait root=/dev/mm
 saveenv
 ```
 
-​		目前为止我们还不能使用 LCD 作为终端进行交互，因为我们的设置还未完成，打开开发板根文件系统中的/etc/inittab 文件，加入以下代码 （如 图50 所示）：
+​		目前为止我们还不能使用 LCD 作为终端进行交互，因为我们的设置还未完成，打开开发板根文件系统中的/etc/inittab 文件，加入以下代码 ：
 
 ```shell
 # console::askfirst:-
@@ -1179,9 +1160,7 @@ tty1::askfirst:-/bin/sh	/* 打开 tty1 也就是设置 LCD 作为终端 */
 
 ![50](Image/50.png)
 
-<center>图50</center>
-
-​		修改完成后保存退出，重启开发板后，开发板 LCD 屏幕最后一行会显示以下语句 `Please press Enter to activate this console` 中文意思是按下回车键使能当前终端，上一环节，俺们已经使能了 usb 驱动，因此直接接上 usb 键盘按下回车按键使能即可，我们可以让屏幕打印输出 "hello Rhino Pi" 测试（如 图52 所示），代码如下：
+​		修改完成后保存退出，重启开发板后，开发板 LCD 屏幕最后一行会显示以下语句 `Please press Enter to activate this console` 中文意思是按下回车键使能当前终端，上一环节，俺们已经使能了 usb 驱动，因此直接接上 usb 键盘按下回车按键使能即可，我们可以让屏幕打印输出 "hello Rhino Pi" 测试，代码如下：
 
 ```
 echo hello Rhino Pi > /dev/tty1
@@ -1189,9 +1168,7 @@ echo hello Rhino Pi > /dev/tty1
 
 ![52](Image/52.jpg)
 
-<center>图52</center>
-
-​		接下来使能 Linux logo 显示，Linux 内核启动的时候是可以选择（如 图52 所示）显示小企鹅 logo 的，这个 logo 显示是需要手动配置，上一步，俺们修改过设备树文件，所以需要重新编译一下设备树，代码如下：
+​		接下来使能 Linux logo 显示，Linux 内核启动的时候是可以选择显示小企鹅 logo 的，这个 logo 显示是需要手动配置，上一步，俺们修改过设备树文件，所以需要重新编译一下设备树，代码如下：
 
 ```shell
 make dtbs
@@ -1208,11 +1185,11 @@ Device Drivers  --->
            [*] Standard 224-color Linux logo (NEW)
 ```
 
-​		保存退出后重新编译，启动开发板（如 图53 所示）
+​		保存退出后重新编译，启动开发板。
 
 ![53](Image/53.jpg)
 
-<center>图53</center>
+
 
 
 
