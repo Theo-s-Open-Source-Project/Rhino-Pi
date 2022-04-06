@@ -65,7 +65,7 @@
 
 ​		项目进度，先已移植 InfoNES 模拟器，接下来调通音频即可，视频如下：
 
-[![Watch the video](Image/NES.png)]([自制 Linux Card 运行 Nes 游戏 Mario_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1F44y1V7m9?spm_id_from=333.999.0.0))
+[![Watch the video](Image/NES.png)](https://www.bilibili.com/video/BV1F44y1V7m9?spm_id_from=333.999.0.0)
 
 >项目需求：
 >
