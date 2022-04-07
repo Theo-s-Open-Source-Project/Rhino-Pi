@@ -1,34 +1,56 @@
+<p align="center">
+	<a href="https://github.com/CUTETA/Rhino-Pi">
+		<img src="https://badgen.net/github/release/CUTETA/Rhino-Pi" alt="Release">
+	</a>
+	<a href="https://github.com/CUTETA/Rhino-Pi/stargazers/">
+		<img src="https://badgen.net/github/stars/CUTETA/Rhino-Pi" alt="GitHub stars">
+	</a>
+    <a href="https://github.com/CUTETA/Rhino-Pi">
+    	<img src="https://badgen.net/github/commits/CUTETA/Rhino-Pi" alt="GitHub commits">
+    </a>
+    <a href="https://github.com/CUTETA/Rhino-Pi">
+    	<img src="https://badgen.net/github/license/CUTETA/Rhino-Pi" alt="GitHub license">
+    </a>
+    <a href="https://github.com/CUTETA/Rhino-Pi/releases/tag/0.1.0-beta">
+    	<img src="https://badgen.net/github/assets-dl/CUTETA/Rhino-Pi/0.1.0-beta" alt="GitHub download"
+    </a>
+</p>
+
+
+
 # Rhino-Pi
 
+
+
 * [一、前言（碎碎念）](#一前言碎碎念)
-  * [二、Uboot 系统移植](#二uboot-系统移植)
-    * [1\.克隆 LicheePI nano 的u\-boot](#1克隆-licheepi-nano-的u-boot)
-    * [2\.修改开发板对应的板级文件](#2修改开发板对应的板级文件)
-    * [3\.修改 U\-Boot 图形界面配置文件](#3修改-u-boot-图形界面配置文件)
-      * [3\.1 环境变量 bootcmd](#31-环境变量-bootcmd)
-      * [3\.2 环境变量 bootargs](#32-环境变量-bootargs)
-      * [3\.3 编译](#33-编译)
-      * [3\.4 烧写](#34-烧写)
-  * [三、kernel 内核移植](#三kernel-内核移植)
-    * [1\.下载解压 LicheePI nano 的 kernel](#1下载解压-licheepi-nano-的-kernel)
-    * [2\.修改 kernel 图形界面配置文件](#2修改-kernel-图形界面配置文件)
-    * [3\.编译 kernel 内核](#3编译-kernel-内核)
-    * [4\.烧写](#4烧写)
-  * [四、rootfs  根文件系统移植](#四rootfs--根文件系统移植)
-    * [1\.Buildroot 制作根文件系统](#1buildroot-制作根文件系统)
-    * [2\.busyBox 制作根文件系统（未编写）](#2busybox-制作根文件系统未编写)
-    * [3\.Debian 文件系统制作（编写ing \- 有小bug）](#3debian-文件系统制作编写ing---有小bug)
-    * [4\.NES 游戏（编写ing）](#4nes-游戏编写ing)
-  * [五、Linux 驱动开发](#五linux-驱动开发)
-    * [1\.设备树（编写ing）](#1设备树编写ing)
-      * [设备节点](#设备节点)
-      * [设备属性](#设备属性)
-    * [2\.LED 驱动开发（有 bug）](#2led-驱动开发有-bug)
-    * [3\.驱动模块的加载和卸载（未编写）](#3驱动模块的加载和卸载未编写)
-    * [4\.USB 驱动开发](#4usb-驱动开发)
-    * [5\.LCD 驱动开发](#5lcd-驱动开发)
-    * [6\.无线网卡（未编写）](#6无线网卡未编写)
-    * [7\.音频驱动（未编写）](#7音频驱动未编写)
+* [二、Uboot 系统移植](#二uboot-系统移植)
+  * [1\.克隆 LicheePI nano 的u\-boot](#1克隆-licheepi-nano-的u-boot)
+  * [2\.修改开发板对应的板级文件](#2修改开发板对应的板级文件)
+  * [3\.修改 U\-Boot 图形界面配置文件](#3修改-u-boot-图形界面配置文件)
+    * [3\.1 环境变量 bootcmd](#31-环境变量-bootcmd)
+    * [3\.2 环境变量 bootargs](#32-环境变量-bootargs)
+    * [3\.3 编译](#33-编译)
+    * [3\.4 烧写](#34-烧写)
+* [三、kernel 内核移植](#三kernel-内核移植)
+  * [1\.下载解压 LicheePI nano 的 kernel](#1下载解压-licheepi-nano-的-kernel)
+  * [2\.修改 kernel 图形界面配置文件](#2修改-kernel-图形界面配置文件)
+  * [3\.编译 kernel 内核](#3编译-kernel-内核)
+  * [4\.烧写](#4烧写)
+* [四、rootfs  根文件系统移植](#四rootfs--根文件系统移植)
+  * [1\.Buildroot 制作根文件系统](#1buildroot-制作根文件系统)
+  * [2\.busyBox 制作根文件系统（未编写）](#2busybox-制作根文件系统未编写)
+  * [3\.Debian 文件系统制作（编写ing \- 有小bug）](#3debian-文件系统制作编写ing---有小bug)
+  * [4\.NES 游戏（编写ing）](#4nes-游戏编写ing)
+* [五、Linux 驱动开发](#五linux-驱动开发)
+  * [1\.设备树（编写ing）](#1设备树编写ing)
+    * [设备节点](#设备节点)
+    * [设备属性](#设备属性)
+  * [2\.LED 驱动开发（有 bug）](#2led-驱动开发有-bug)
+  * [3\.驱动模块的加载和卸载（未编写）](#3驱动模块的加载和卸载未编写)
+  * [4\.USB 驱动开发](#4usb-驱动开发)
+  * [5\.LCD 驱动开发](#5lcd-驱动开发)
+  * [6\.无线网卡（未编写）](#6无线网卡未编写)
+  * [7\.音频驱动（未编写）](#7音频驱动未编写)
 
 
 
@@ -42,7 +64,7 @@
 
 ## 一、前言（碎碎念🤣）
 
-​		本项目是基于全志 F1C100S/F1C200S 芯片的 Linux-Card，开发目的是想折腾个掌机出来，用于 ~~上课摸鱼~~ 😎 额，学习嵌入式Linux，现开源硬件部分：核心板 Gerber、底板源文件（基于立创 EDA 绘制）、3D 外壳 STL 文件，软件部分：u-boot、kernel 内核、rootfs 根文件系统。
+​		本项目是基于全志 F1C100S/F1C200S 芯片的 Linux-Card，开发目的是想折腾个掌机出来，用于 ~~上课摸鱼~~ 😎 额，学习嵌入式Linux，现开源硬件部分：核心板 Gerber、底板源文件（基于立创 EDA 绘制）、3D 外壳 STL 文件，软件部分：u-boot、kernel 内核、rootfs 根文件系统。BOM 表：[F1C100S_Core BOM (jan-z.top)](https://jan-z.top/html/F1C100S_Core1_0.html)、[F1C100S_Bottom_Board BOM (jan-z.top)](https://jan-z.top/html/F1C100S_Bottom_Board2_0.html)
 
 ![F1C100S_Core](Image/F1C100S_Core.png)
 
@@ -63,7 +85,7 @@
 > - 板载 WiFi 模块
 > - 1.8’ LCD
 
-​		项目进度，先已移植 InfoNES 模拟器，接下来调通音频即可，视频如下：
+​		项目进度，现已移植 InfoNES 模拟器，接下来调通音频即可，视频如下：
 
 [![Watch the video](Image/NES.png)](https://www.bilibili.com/video/BV1F44y1V7m9?spm_id_from=333.999.0.0)
 
@@ -71,6 +93,7 @@
 >
 >- 画面 ✔
 >- 音频 ✖
+>- 网络 ✖
 
 
 
@@ -914,10 +937,9 @@ echo 134 > /sys/class/gpio/unexport
 
 ![36](Image/36(2).png)
 
-​				通过查表我们得到要用到的寄存器，以 GPIOE_CFG0 为例，$设备号 = 主设备号 + 次设备号$ 即：
-$$
-Address=0x01C20800+4*0x24+0x00=0x01C20800+0x90=0x1C20890
-$$
+​				通过查表我们得到要用到的寄存器，以 GPIOE_CFG0 为例，`设备号 = 主设备号 + 次设备号` 即：
+
+![设备号](Image/设备号.png)
 
 | Register Name |   Offset   |   Description   |
 | :-----------: | :--------: | :-------------: |
