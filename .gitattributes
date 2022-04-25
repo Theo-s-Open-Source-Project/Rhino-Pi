@@ -1,2 +1,3 @@
-*.md linguist-language=c;
-*.rar linguist-language=C
+*.md linguist-language=C;
+*.rar linguist-language=C++;
+*.txt linguist-language=Makefile
