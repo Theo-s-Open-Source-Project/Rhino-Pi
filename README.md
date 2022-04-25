@@ -1,18 +1,18 @@
 <p align="center">
-	<a href="https://github.com/CUTETA/Rhino-Pi">
-		<img src="https://badgen.net/github/release/CUTETA/Rhino-Pi" alt="Release">
+	<a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi">
+		<img src="https://badgen.net/github/release/Theo-s-Open-Source-Project/Rhino-Pi" alt="Release">
 	</a>
-	<a href="https://github.com/CUTETA/Rhino-Pi/stargazers/">
-		<img src="https://badgen.net/github/stars/CUTETA/Rhino-Pi" alt="GitHub stars">
+	<a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi/stargazers/">
+		<img src="https://badgen.net/github/stars/Theo-s-Open-Source-Project/Rhino-Pi" alt="GitHub stars">
 	</a>
-    <a href="https://github.com/CUTETA/Rhino-Pi">
-    	<img src="https://badgen.net/github/commits/CUTETA/Rhino-Pi" alt="GitHub commits">
+    <a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi">
+    	<img src="https://badgen.net/github/commits/Theo-s-Open-Source-Project/Rhino-Pi" alt="GitHub commits">
     </a>
-    <a href="https://github.com/CUTETA/Rhino-Pi">
-    	<img src="https://badgen.net/github/license/CUTETA/Rhino-Pi" alt="GitHub license">
+    <a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi">
+    	<img src="https://badgen.net/github/license/Theo-s-Open-Source-Project/Rhino-Pi" alt="GitHub license">
     </a>
-    <a href="https://github.com/CUTETA/Rhino-Pi/releases/tag/0.1.0-beta">
-    	<img src="https://badgen.net/github/assets-dl/CUTETA/Rhino-Pi/0.1.0-beta" alt="GitHub download"
+    <a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi/releases/tag/0.1.0-beta">
+    	<img src="https://badgen.net/github/assets-dl/Theo-s-Open-Source-Project/Rhino-Pi/0.1.0-beta" alt="GitHub download"
     </a>
 </p>
 
