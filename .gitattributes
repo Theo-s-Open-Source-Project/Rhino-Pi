@@ -1,3 +1,2 @@
 *.rar linguist-language=C
 *.tar linguist-language=C++
-*.txt linguist-language=Makefile
