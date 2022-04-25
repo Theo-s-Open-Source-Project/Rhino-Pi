@@ -507,7 +507,7 @@ sudo tar -xvf rootfs.tar -C /media/z/rootfs/
 
 ​		在 soc 子节点下的 pio子节点添加以下内容：
 
-```
+```c
 			mmc0_pins: mmc0-pins {
 				pins = "PF0", "PF1", "PF2", "PF3", "PF4", "PF5";
 				function = "mmc0";
@@ -516,7 +516,7 @@ sudo tar -xvf rootfs.tar -C /media/z/rootfs/
 
 ​		在 soc 子节点下添加 mmc0 子节点：
 
-```
+```c
 		mmc0: mmc@1c0f000 {
 			compatible = "allwinner,suniv-f1c100s-mmc",
 				     "allwinner,sun7i-a20-mmc";
@@ -542,13 +542,13 @@ sudo tar -xvf rootfs.tar -C /media/z/rootfs/
 
 ​		接着修改 *suniv-f1c100s-licheepi-nano.dts* 添加头文件：
 
-```
+```c
 #include <dt-bindings/gpio/gpio.h>
 ```
 
 ​		在根节点增加以下代码：
 
-```
+```c
 	reg_vcc3v3: vcc3v3 {
                 compatible = "regulator-fixed";
                 regulator-name = "vcc3v3";
@@ -559,7 +559,7 @@ sudo tar -xvf rootfs.tar -C /media/z/rootfs/
 
 ​		在外部添加 mmc0 使能代码
 
-``` 
+``` c
 &mmc0 {
 	vmmc-supply = <&reg_vcc3v3>;
     bus-width = <4>;
