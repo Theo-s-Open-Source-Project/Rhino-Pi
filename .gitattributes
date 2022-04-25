@@ -1,3 +1,2 @@
-*.md linguist-language=C
-*.rar linguist-language=C++
-*.txt linguist-language=Makefile
+
+*.xz filter=lfs diff=lfs merge=lfs -text
