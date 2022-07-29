@@ -6,9 +6,6 @@
 		<img src="https://badgen.net/github/stars/Theo-s-Open-Source-Project/Rhino-Pi" alt="GitHub stars">
 	</a>
     <a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi">
-    	<img src="https://badgen.net/github/commits/Theo-s-Open-Source-Project/Rhino-Pi" alt="GitHub commits">
-    </a>
-    <a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi">
     	<img src="https://badgen.net/github/license/Theo-s-Open-Source-Project/Rhino-Pi" alt="GitHub license">
     </a>
     <a href="https://github.com/Theo-s-Open-Source-Project/Rhino-Pi/releases/tag/0.1.0-beta">
