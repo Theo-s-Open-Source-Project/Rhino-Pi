@@ -63,7 +63,7 @@
 
 ## 一、前言（碎碎念🤣）
 
-​		本项目是基于全志 F1C100S/F1C200S 芯片的 Linux-Card，开发目的是想折腾个掌机出来，用于 ~~上课摸鱼~~ 😎 额，学习嵌入式Linux，现开源硬件部分：核心板 Gerber、底板源文件（基于立创 EDA 绘制）、3D 外壳 STL 文件，软件部分：u-boot、kernel 内核、rootfs 根文件系统。BOM 表：[F1C100S_Core BOM (jan-z.top)](https://jan-z.top/html/F1C100S_Core1_0.html)、[F1C100S_Bottom_Board BOM (jan-z.top)](https://jan-z.top/html/F1C100S_Bottom_Board2_0.html)
+​		本项目是基于全志 F1C100S/F1C200S 芯片的 Linux-Card，开发目的是想折腾个掌机出来，用于 ~~上课摸鱼~~ 😎 额，学习嵌入式Linux，现开源硬件部分：核心板 Gerber、底板源文件（基于立创 EDA 绘制）、3D 外壳 STL 文件，软件部分：u-boot、kernel 内核、rootfs 根文件系统。BOM 表：[F1C100S_Core BOM](https://theotsang.xyz/html/F1C100S_Core1_0.html)、[F1C100S_Bottom_Board BOM](https://theotsang.xyz/html/F1C100S_Bottom_Board2_0.html)
 
 ![F1C100S_Core](Image/F1C100S_Core.png)
 
